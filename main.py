@@ -21,6 +21,11 @@ def get_db_connection():
 def generate_short_link(length=5):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
+
+def base64_decode(encoded_string):
+  decoded_bytes = base64.b64decode(encoded_string)
+  decoded_string = decoded_bytes.decode('utf-8')
+  return decoded_string
 # Tạo ứng dụng FastAPI
 def create_tables():
     conn = get_db_connection()
@@ -41,7 +46,7 @@ create_tables()
 
 @app.get("/short")
 async def shorten_url(url: str):
-    decoded_url = base64.b64decode(url)
+    decoded_url = base64_decode(url)
     conn = get_db_connection()
     cursor = conn.cursor()
     # Kiểm tra nếu URL đã tồn tại
