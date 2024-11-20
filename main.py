@@ -4,6 +4,7 @@ import psycopg2
 import random
 import string
 import os
+import base64
 app = FastAPI()
 
 def get_db_connection():
@@ -40,11 +41,11 @@ create_tables()
 
 @app.get("/short")
 async def shorten_url(url: str):
+    decoded_url = base64.b64decode(url)
     conn = get_db_connection()
     cursor = conn.cursor()
-
     # Kiểm tra nếu URL đã tồn tại
-    cursor.execute("SELECT short_link FROM urls WHERE long_url = %s", (url,))
+    cursor.execute("SELECT short_link FROM urls WHERE long_url = %s", (decoded_url,))
     result = cursor.fetchone()
     if result:
         short_link = result[0]
@@ -60,7 +61,7 @@ async def shorten_url(url: str):
         short_link = generate_short_link()
 
     # Lưu vào database
-    cursor.execute("INSERT INTO urls (short_link, long_url) VALUES (%s, %s)", (short_link, url))
+    cursor.execute("INSERT INTO urls (short_link, long_url) VALUES (%s, %s)", (short_link, decoded_url))
     conn.commit()
     conn.close()
 
