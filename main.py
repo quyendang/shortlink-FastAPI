@@ -48,7 +48,7 @@ async def shorten_url(url: str):
     if result:
         short_link = result[0]
         conn.close()
-        return {"url": f"https://quyen.us/{short_link}"}
+        return {"url": f"https://binh.store/{short_link}"}
 
     # Tạo short link
     short_link = generate_short_link()
@@ -63,7 +63,7 @@ async def shorten_url(url: str):
     conn.commit()
     conn.close()
 
-    return {"url": f"https://quyen.us/{short_link}"}
+    return {"url": f"https://binh.store/{short_link}"}
 
 @app.get("/{short_link}")
 async def redirect_to_long_url(short_link: str):
