@@ -26,7 +26,7 @@ def create_tables():
     
     # Tạo bảng lưu thông tin IP từ API /check
     cursor.execute('''
-    CREATE TABLE urls (
+    CREATE TABLE IF NOT EXISTS urls (
         id SERIAL PRIMARY KEY,
         short_link VARCHAR(10) UNIQUE NOT NULL,
         long_url TEXT NOT NULL
