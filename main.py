@@ -63,3 +63,8 @@ async def redirect_to_long_url(short_link: str):
 
     long_url = result[0]
     return {"url": long_url}
+
+if __name__ == "__main__":
+    import uvicorn
+    # Chạy ứng dụng trên cổng 10000, cổng mặc định trên Render
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
