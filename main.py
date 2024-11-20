@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 import psycopg2
 import random
 import string
+import os
 
 def get_db_connection():
     conn = psycopg2.connect(
