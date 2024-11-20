@@ -3,6 +3,7 @@ import psycopg2
 import random
 import string
 import os
+app = FastAPI()
 
 def get_db_connection():
     conn = psycopg2.connect(
@@ -19,7 +20,22 @@ def generate_short_link(length=5):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
 # Tạo ứng dụng FastAPI
-app = FastAPI()
+def create_tables():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    # Tạo bảng lưu thông tin IP từ API /check
+    cursor.execute('''
+    CREATE TABLE urls (
+        id SERIAL PRIMARY KEY,
+        short_link VARCHAR(10) UNIQUE NOT NULL,
+        long_url TEXT NOT NULL
+    )
+    ''')
+    conn.commit()
+    conn.close()
+
+create_tables()
 
 @app.get("/short")
 async def shorten_url(url: str):
