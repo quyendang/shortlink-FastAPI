@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from starlette.responses import RedirectResponse
 import psycopg2
 import random
 import string
@@ -79,7 +80,7 @@ async def redirect_to_long_url(short_link: str):
         raise HTTPException(status_code=404, detail="Short link not found")
 
     long_url = result[0]
-    return {"url": long_url}
+    return RedirectResponse(url=long_url, status_code=302)
 
 if __name__ == "__main__":
     import uvicorn
